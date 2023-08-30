@@ -24,7 +24,11 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get("/api/:date", (req, res) => {
+  console.log(req.params.date);
+  const date = isNaN(+req.params.date) ? new Date(req.params.date) : new Date (+req.params.date * 1000);
+  res.json({"unix":Math.floor(date.getTime()/1000),"utc": date.toUTCString()});
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
