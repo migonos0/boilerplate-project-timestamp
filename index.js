@@ -25,9 +25,15 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date", (req, res) => {
-  console.log(req.params.date);
-  const date = isNaN(+req.params.date) ? new Date(req.params.date) : new Date (+req.params.date * 1000);
-  res.json({"unix":Math.floor(date.getTime()/1000),"utc": date.toUTCString()});
+  const date = isNaN(+req.params.date) ? new Date(req.params.date) : new Date (+req.params.date);
+  if (isNaN(date.getTime())) {
+    return res.json({ error : "Invalid Date" });
+  }
+  res.json({"unix":Math.floor(date.getTime()),"utc": date.toUTCString()});
+});
+app.get("/api", (req, res) => {
+  const date = new Date();
+  res.json({"unix":Math.floor(date.getTime()),"utc": date.toUTCString()});
 });
 
 // listen for requests :)
